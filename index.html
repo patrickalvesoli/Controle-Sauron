@@ -11,8 +11,11 @@
       --card-bg: #fff;
       --border: #dedfeb;
       --num-ok: #1976d2;
+      --num-t5: #c86f2f;
       --num-t4: #17527e;
+      --num-t3: #8e2fc8;
       --num-t2: #dcad23;
+      --num-t1: #2fc877;
       --num-alt: #c82f3c;
       --num-info: #245392;
       --num-warn: #b08900;
@@ -43,6 +46,7 @@
       margin: 0 auto 0 auto;
       padding: 0 16px;
       min-height: 80px;
+      gap: 10px; /* Adicionado para espaçar os botões */
     }
     header {
       text-align: center;
@@ -60,8 +64,9 @@
           0 0 6px #b2b1ff88,
           0 0 16px #d9d6fe44,
           0 0 2px #7c7df066;
+      flex-grow: 1; /* Permite que o título ocupe espaço disponível */
     }
-    .btn-resumo {
+    .btn-resumo { /* Unificado estilos para botões */
       background: var(--sauron);
       color: #fff;
       font-size: 1rem;
@@ -80,10 +85,9 @@
       align-items: center;
       gap:8px;
       outline: none;
+      flex-shrink: 0; /* Impede que os botões diminuam */
     }
-    .btn-resumo:active,
-    .btn-resumo:focus,
-    .btn-resumo:hover {
+    .btn-resumo:active, .btn-resumo:focus, .btn-resumo:hover {
       background: #2117ac;
       color:#fff;
       box-shadow:0 6px 27px #554eee33;
@@ -207,19 +211,22 @@
     }
     @keyframes fadein {
       from { opacity: 0; transform: translateY(-10px);}
-      to   { opacity: 1; transform:translateY(0);}
+      to  { opacity: 1; transform:translateY(0);}
     }
     .fieldsetDMO {
       display:flex; flex-direction:column; gap:18px; position:relative;
     }
-    .campo-t4, .campo-t2, .campo-sauron {
+    .campo-t1, .campo-t2, .campo-t3, .campo-t4, .campo-t5, .campo-sauron {
       border-radius: 7px;
       margin-bottom:5px;
       padding:8px 10px 8px 18px;
       font-size:1.02em;
     }
-    .campo-t4 {border-left: 6px solid var(--num-t4);background: #e6f0fb;}
+    .campo-t1 {border-left: 6px solid var(--num-t1);background: #e4fff1;}
     .campo-t2 {border-left: 6px solid var(--num-t2);background: #fffbe4;}
+    .campo-t3 {border-left: 6px solid var(--num-t3);background: #f9e4ff;}
+    .campo-t4 {border-left: 6px solid var(--num-t4);background: #e6f0fb;}
+    .campo-t5 {border-left: 6px solid var(--num-t5);background: #fffae4;}
     .campo-sauron {border-left: 6px solid var(--sauron);background: #efedfe;}
     label {
       font-weight: 700;
@@ -229,8 +236,11 @@
       margin-right: 0.5em;
       margin-bottom: 0;
     }
-    .campo-t4 label { color: var(--num-t4); }
+    .campo-t1 label { color: var(--num-t1); }
     .campo-t2 label { color: var(--num-t2); }
+    .campo-t3 label { color: var(--num-t3); }
+    .campo-t4 label { color: var(--num-t4); }
+    .campo-t5 label { color: var(--num-t5); }
     .campo-sauron label { color: var(--sauron);}
     .entrada-input,
     .manut-input {
@@ -270,10 +280,10 @@
       margin-bottom:2px;
       border-left: 5px solid var(--num-info);
     }
-    .resultDMO.r-info   { border-left: 5px solid var(--num-info);}
-    .resultDMO.r-dang   { border-left: 5px solid var(--num-alt);}
-    .resultDMO.r-suc    { border-left: 5px solid var(--num-ok);}
-    .resultDMO.r-warn   { border-left: 5px solid var(--num-warn);}
+    .resultDMO.r-info      { border-left: 5px solid var(--num-info);}
+    .resultDMO.r-dang      { border-left: 5px solid var(--num-alt);}
+    .resultDMO.r-suc       { border-left: 5px solid var(--num-ok);}
+    .resultDMO.r-warn      { border-left: 5px solid var(--num-warn);}
     .resultDMO strong { font-weight: 900; color: #16244c; }
     .resultDMO .num {
       font-size: 1.44em;
@@ -296,47 +306,22 @@
       border-radius: 7px;
       margin-bottom:0;
     }
-    .picking-header {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin-bottom: 12px;
-    }
-    .picking-icone {
-      font-size: 1.25em;
-      vertical-align: middle;
-    }
-    .picking-titulo {
-      font-family: 'Montserrat',Arial,sans-serif;
-      font-size: 1.08em;
-      font-weight: 900;
-      letter-spacing:0.4px;
-      color: var(--num-ok);
-      text-shadow: 0 2px 11px #aadaff45;
-    }
-    .picking-fields {
-      gap: 10px;
-    }
-    .picking-field {
+    .hc-field {
       display: flex;
       flex-direction: column;
       margin-bottom: 3.5px;
+      background: #eaf4ff;
+      border: 1.3px solid #90caf9;
+      border-left: 5px solid var(--num-ok);
+      border-radius: 6px;
+      padding: 8px 12px;
     }
-    .picking-field label {
+    .hc-field label {
       font-size: 1.07em;
       color: var(--num-ok);
-      margin-bottom: -2px;
+      margin-bottom: 1px;
     }
-    .picking-field .hint {
-      font-size: 0.98em;
-      color: #3994d7;
-      margin-left: 2px;
-      margin-top: 1px;
-      font-family: 'Quicksand','Montserrat',Arial,sans-serif;
-      font-weight: 600;
-      opacity:0.85;
-    }
-    .picking-field input[type="number"]{
+    .hc-field input{
       background: #fff;
       border: 1.3px solid #90caf9;
       padding-left: 10px;
@@ -381,22 +366,27 @@
     .resumo-side {
       display: none;
       position: fixed;
-      top:0;
-      right: 0;
-      height: 100vh;
-      width: 400px;
       box-shadow: -7px 0 31px #554eee30;
       z-index: 1002;
       background: #fafafd;
-      border-left: 4.2px solid var(--sauron);
-      padding:38px 35px 42px 32px;
+      border: 2px solid var(--sauron); /* Borda completa roxa */
+      border-radius: 13px; /* Bordas arredondadas */
+      padding: 30px; /* Aumentado o padding */
       flex-direction: column;
-      gap: 22px;
-      min-width: 260px;
+      gap: 15px;
+      min-width: 320px; /* Aumentado a largura mínima */
       max-width:98vw;
       outline:none;
       transition: none;
+      overflow-y: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 50%;
+      transform: translate(-50%, -50%);
+      height: auto;
+      max-height: 90vh;
     }
+
     .resumo-side.active {
       display: flex;
     }
@@ -407,27 +397,27 @@
       letter-spacing:1.4px;
       font-family:'Montserrat',Arial,sans-serif;
       text-shadow:0 3px 15px #554eee28;
-      margin-bottom:22px;
+      margin-bottom:15px;
       text-align:left;
     }
     .resumo-datahora {
       font-size:.99em;
       letter-spacing:.5px;
       color: #8686b0;
-      margin-bottom:22px;
-      padding-bottom:10px;
+      margin-bottom:15px;
+      padding-bottom:8px;
       border-bottom: 1.2px dotted #dddffa;
       font-family:'Quicksand','Montserrat',sans-serif;
     }
     .resumo-items {
       display:flex;
       flex-direction: column;
-      gap:24px;
+      gap:18px;
     }
     .resumo-row {
-      font-size:1.12em;
+      font-size:1.05em;
       display:flex;align-items: center;justify-content:space-between;
-      padding:14px 0;
+      padding:10px 0;
       border-bottom: 1px solid #eceefe;
       font-family: 'Montserrat',Arial,sans-serif;
     }
@@ -439,20 +429,23 @@
     .resumo-value {
       color: #242464;
       font-weight:900;
-      font-size:1.28em;
+      font-size:1.2em;
       display:inline-block;
       min-width:52px;
       letter-spacing:1.1px;
+      text-align: right;
     }
     .resumo-value.sauron {color: var(--sauron);}
     .resumo-value.ok {color: var(--num-ok);}
     .resumo-value.alt {color: var(--num-alt);}
     .resumo-close-btn {
-      position:absolute; top:13px; right:17px;
+      position:absolute;
+      top:10px;
+      right:10px;
       background: none;
       border:none;
       color: #554eee;
-      font-size: 2em;
+      font-size: 1.8em;
       font-weight:900;
       cursor:pointer;
       line-height:1;
@@ -460,19 +453,18 @@
       transition:.18s;
       z-index:10;
     }
-    .resumo-close-btn:hover,
-    .resumo-close-btn:focus {
+    .resumo-close-btn:hover, .resumo-close-btn:focus {
       color: #20116e;
       background: #ececff;
     }
     .resumo-prev {
-      font-size:1.12em;
-      padding:13px 17px 13px 17px;
+      font-size:1.05em;
+      padding:10px 14px;
       background:#f6f6ff;
       color:var(--num-warn);
       border:1.6px dashed #a1a1ff3b;
       border-radius: 8px;
-      margin: 16px 0 0 0;
+      margin: 10px 0 0 0;
       font-weight:700;
       text-align:center;
       letter-spacing:.7px;
@@ -491,6 +483,7 @@
       display:block;
       opacity:1;
     }
+
     footer {
       text-align:center;
       color:#65629b;
@@ -502,9 +495,12 @@
     }
     @media (max-width:700px) {
       html,body{font-size:14px;}
-      .resumo-side {width:97vw;padding:20px 4vw 20px 6vw;}
+      .resumo-side {width:97vw;padding:20px;} /* Ajuste de padding em mobile */
       .resumo-title{font-size:1.17em;}
-      .resumo-row{font-size:1em;padding:12px 0;}
+      .resumo-row{font-size:1em;padding:8px 0;}
+      .top-bar {flex-direction: column; align-items: stretch; padding: 10px;}
+      .btn-resumo { width: 100%; justify-content: center; padding: 8px; margin-bottom: 5px;}
+      header {padding: 10px 0; font-size: 1.5rem;}
     }
   </style>
 </head>
@@ -523,19 +519,31 @@
 <div class="dashboard-main" id="mainDashboard">
   <div class="accordion">
 
-    <section class="acrd-card active">
-      <button type="button" class="acrd-header" aria-expanded="true">
+    <section class="acrd-card">
+      <button type="button" class="acrd-header collapsed" aria-expanded="false">
         <span class="arrow">▼</span> RFs para Entrada
       </button>
-      <div class="acrd-body">
+      <div class="acrd-body" style="display:none;">
         <div class="fieldsetDMO" style="gap:18px;">
-          <div class="campo-t4">
-            <label for="rfT4">RFs Disponíveis Para Entrada do T4</label>
-            <input type="number" id="rfT4" class="entrada-input" value="0" min="0">
+          <div class="campo-t1">
+            <label for="rfT1">RFs Disponíveis Para Entrada do T1</label>
+            <input type="number" id="rfT1" class="entrada-input" value="0" min="0">
           </div>
           <div class="campo-t2">
             <label for="rfT2">RFs Disponíveis Para Entrada do T2</label>
             <input type="number" id="rfT2" class="entrada-input" value="0" min="0">
+          </div>
+          <div class="campo-t3">
+            <label for="rfT3">RFs Disponíveis Para Entrada do T3</label>
+            <input type="number" id="rfT3" class="entrada-input" value="0" min="0">
+          </div>
+          <div class="campo-t4">
+            <label for="rfT4">RFs Disponíveis Para Entrada do T4</label>
+            <input type="number" id="rfT4" class="entrada-input" value="0" min="0">
+          </div>
+          <div class="campo-t5">
+            <label for="rfT5">RFs Disponíveis Para Entrada do T5</label>
+            <input type="number" id="rfT5" class="entrada-input" value="0" min="0">
           </div>
           <div class="campo-sauron">
             <label for="rfSauron">RFs em Sauron Para Movimentação</label>
@@ -544,45 +552,62 @@
         </div>
       </div>
     </section>
-    <section class="acrd-card active">
-      <button type="button" class="acrd-header" aria-expanded="true">
-        <span class="arrow">▼</span> Picking &amp; Transfer
+
+    <section class="acrd-card">
+      <button type="button" class="acrd-header collapsed" aria-expanded="false">
+        <span class="arrow">▼</span> HCs Previstos para Picking
       </button>
-      <div class="acrd-body">
-        <div class="picking-header" style="margin-left:4px">
-          <span class="picking-icone">🚚</span>
-          <span class="picking-titulo">Picking &amp; Transfer</span>
-        </div>
-        <div class="fieldsetDMO picking-fields">
-          <div class="picking-field">
-            <label for="hcT1"><b>HCs T1 (DMO)</b></label>
-            <input type="number" id="hcT1" value="0" min="0">
-            <span class="hint">Conferentes DMO direto</span>
+      <div class="acrd-body" style="display:none;">
+        <div class="fieldsetDMO" style="gap:12px;">
+          <div class="hc-field">
+            <label for="hcsPrevT1Picking"><b>HCs Prev. T1 Picking</b></label>
+            <input type="number" id="hcsPrevT1Picking" value="0" min="0">
           </div>
-          <div class="picking-field">
-            <label for="hcTrans"><b>HCs Transfer (MWH)</b></label>
-            <input type="number" id="hcTrans" value="0" min="0">
-            <span class="hint">Conferentes em transferências</span>
+          <div class="hc-field">
+            <label for="hcsPrevT2Picking"><b>HCs Prev. T2 Picking</b></label>
+            <input type="number" id="hcsPrevT2Picking" value="0" min="0">
           </div>
-          <div class="picking-field">
-            <label for="hcsPrevT4"><b>HCs Prev. T4 Picking</b></label>
-            <input type="number" id="hcsPrevT4" value="0" min="0">
-            <span class="hint">Previstos para Picking T4</span>
+          <div class="hc-field">
+            <label for="hcsPrevT3Picking"><b>HCs Prev. T3 Picking</b></label>
+            <input type="number" id="hcsPrevT3Picking" value="0" min="0">
           </div>
-          <div class="picking-field">
-            <label for="hcsPrevT2"><b>HCs Prev. T2 Picking</b></label>
-            <input type="number" id="hcsPrevT2" value="0" min="0">
-            <span class="hint">Previstos para Picking T2</span>
+          <div class="hc-field">
+            <label for="hcsPrevT4Picking"><b>HCs Prev. T4 Picking</b></label>
+            <input type="number" id="hcsPrevT4Picking" value="0" min="0">
+          </div>
+          <div class="hc-field">
+            <label for="hcsPrevT5Picking"><b>HCs Prev. T5 Picking</b></label>
+            <input type="number" id="hcsPrevT5Picking" value="0" min="0">
           </div>
         </div>
-        <div class="resultsDMO picking-results">
-          <div class="resultDMO r-info picking-total">
-            <strong>Total Picking T1</strong>
-            <span class="num picking-num" id="totalPickingT1">0</span>
+      </div>
+    </section>
+
+    <section class="acrd-card">
+      <button type="button" class="acrd-header collapsed" aria-expanded="false">
+        <span class="arrow">▼</span> HCs Previstos para Transfer (MWH)
+      </button>
+      <div class="acrd-body" style="display:none;">
+        <div class="fieldsetDMO" style="gap:12px;">
+          <div class="hc-field">
+            <label for="hcsPrevT1Transfer"><b>HCs Prev. T1 Transfer</b></label>
+            <input type="number" id="hcsPrevT1Transfer" value="0" min="0">
           </div>
-          <div class="resultDMO r-info picking-total2">
-            <strong>Total Picking T1+T4</strong>
-            <span class="num picking-num" id="totalT1T4">0</span>
+          <div class="hc-field">
+            <label for="hcsPrevT2Transfer"><b>HCs Prev. T2 Transfer</b></label>
+            <input type="number" id="hcsPrevT2Transfer" value="0" min="0">
+          </div>
+          <div class="hc-field">
+            <label for="hcsPrevT3Transfer"><b>HCs Prev. T3 Transfer</b></label>
+            <input type="number" id="hcsPrevT3Transfer" value="0" min="0">
+          </div>
+          <div class="hc-field">
+            <label for="hcsPrevT4Transfer"><b>HCs Prev. T4 Transfer</b></label>
+            <input type="number" id="hcsPrevT4Transfer" value="0" min="0">
+          </div>
+          <div class="hc-field">
+            <label for="hcsPrevT5Transfer"><b>HCs Prev. T5 Transfer</b></label>
+            <input type="number" id="hcsPrevT5Transfer" value="0" min="0">
           </div>
         </div>
       </div>
@@ -609,7 +634,7 @@
             <span class="num" id="totalRfsOperacao">0</span>
           </div>
           <div class="resultDMO r-suc">
-            <strong>Total REPs Hora Pico</strong>
+            <strong>Total HCs Previstos</strong>
             <span class="num" id="totalRepsHoraPico">0</span>
           </div>
         </div>
@@ -618,7 +643,6 @@
   </div>
 </div>
 
-<!-- Resumo detalhado lateral -->
 <div class="resumo-overlay" id="resumoOverlay"></div>
 <aside class="resumo-side" id="resumoSide" tabindex="-1" aria-hidden="true" aria-label="Resumo detalhado">
   <button class="resumo-close-btn" title="Fechar resumo" id="fecharResumo" aria-label="Fechar resumo">&times;</button>
@@ -630,7 +654,7 @@
       <span class="resumo-value sauron" id="resumoRFSauron">0</span>
     </div>
     <div class="resumo-row">
-      <span class="resumo-label">Total RFs Em Uso</span>
+      <span class="resumo-label">Total HCs Previstos</span>
       <span class="resumo-value ok" id="resumoTotalPicking">0</span>
     </div>
     <div class="resumo-row">
@@ -644,6 +668,7 @@
     </div>
   </div>
 </aside>
+
 
 <footer>
   Desenvolvido por Patrick Alves De Oliveira Maciel
@@ -668,50 +693,67 @@ function updateDateHour(){
   $("resumoDataHora").textContent = now.date +" • "+ now.time;
 }
 
-// Aqui está a ALTERAÇÃO para os horários, mantém tudo original exceto o bloco dos horários!
 function calcDMO() {
-  let rfT4 = +$("rfT4").value||0,
+  // Ler valores dos RFs
+  let rfT1 = +$("rfT1").value||0,
       rfT2 = +$("rfT2").value||0,
-      rfSauron = +$("rfSauron").value||0,
-      hcT1 = +$("hcT1").value||0,
-      hcTrans = +$("hcTrans").value||0,
-      hcsPrevT4 = +$("hcsPrevT4").value||0,
-      hcsPrevT2 = +$("hcsPrevT2").value||0,
-      rfManut = +$("rfManut").value||0;
+      rfT3 = +$("rfT3").value||0,
+      rfT4 = +$("rfT4").value||0,
+      rfT5 = +$("rfT5").value||0,
+      rfSauron = +$("rfSauron").value||0;
+      
+  // Ler valores dos HCs de Picking
+  let hcsPrevT1Picking = +$("hcsPrevT1Picking").value||0,
+      hcsPrevT2Picking = +$("hcsPrevT2Picking").value||0,
+      hcsPrevT3Picking = +$("hcsPrevT3Picking").value||0,
+      hcsPrevT4Picking = +$("hcsPrevT4Picking").value||0,
+      hcsPrevT5Picking = +$("hcsPrevT5Picking").value||0;
+      
+  // Ler valores dos HCs de Transfer
+  let hcsPrevT1Transfer = +$("hcsPrevT1Transfer").value||0,
+      hcsPrevT2Transfer = +$("hcsPrevT2Transfer").value||0,
+      hcsPrevT3Transfer = +$("hcsPrevT3Transfer").value||0,
+      hcsPrevT4Transfer = +$("hcsPrevT4Transfer").value||0,
+      hcsPrevT5Transfer = +$("hcsPrevT5Transfer").value||0;
 
-  let rfTotalSauron = rfT4 + rfT2 + rfSauron;
-  let totalPickingT1 = hcT1 + hcTrans;
-  let totalT1T4 = hcT1 + hcTrans + hcsPrevT4;
-  let totalRepsHoraPico = totalT1T4;
-  let totalRfsOperacao = rfTotalSauron + totalT1T4;
+  // Ler valor de RFs em Manutenção
+  let rfManut = +$("rfManut").value||0;
 
+  // --- CÁLCULOS PRINCIPAIS ---
+  let rfTotalSauron = rfT1 + rfT2 + rfT3 + rfT4 + rfT5 + rfSauron;
+  
+  let totalHcsPicking = hcsPrevT1Picking + hcsPrevT2Picking + hcsPrevT3Picking + hcsPrevT4Picking + hcsPrevT5Picking;
+  let totalHcsTransfer = hcsPrevT1Transfer + hcsPrevT2Transfer + hcsPrevT3Transfer + hcsPrevT4Transfer + hcsPrevT5Transfer;
+  
+  // Total de HCs Previstos (Total de operadores que precisarão de RF)
+  let totalRepsHoraPico = totalHcsPicking + totalHcsTransfer;
+  
+  // Total de RFs na operação (Disponíveis + Em Uso/Previstos)
+  let totalRfsOperacao = rfTotalSauron + totalRepsHoraPico;
+
+  // --- ATUALIZAR UI (INTERFACE DO USUÁRIO) ---
   $("rfTotalSauron").textContent = rfTotalSauron;
-  $("totalPickingT1").textContent = totalPickingT1;
-  $("totalT1T4").textContent = totalT1T4;
   $("totalRepsHoraPico").textContent = totalRepsHoraPico;
   $("totalRfsOperacao").textContent = totalRfsOperacao;
+  
+  // Atualizar Resumo Lateral
   $("resumoRFSauron").textContent = rfTotalSauron;
-  $("resumoTotalPicking").textContent = totalT1T4;
+  $("resumoTotalPicking").textContent = totalRepsHoraPico;
   $("resumoManut").textContent = rfManut > 0 ? `${rfManut} RF${rfManut>1?'s':''}` : "Não";
 
-  // --- PREVISÃO (ajustado para novo horário T4 e T2)
+  // --- LÓGICA DE PREVISÃO POR HORÁRIO ---
   const now = getNowBR();
   let prevMsg = "";
   let show = false;
   let diffLabel = "";
   let diffValue = "";
   let diffShow = false;
-
-  // T4: das 06:00 até 10:00
-  if ((now.hour >= 6 && now.hour <= 10 && !(now.hour === 10 && now.min > 0))) {
-      prevMsg = `Previsão T4: <span style="color:var(--num-t4);font-weight:800;">${hcsPrevT4}</span> HCs Picking`;
-      let diff = rfTotalSauron - hcsPrevT4;
-      diffLabel = "Previsão - RFs no Sauron";
-      let color = diff < 0 ? 'var(--num-alt)' : 'var(--num-ok)';
-      let msg = diff < 0 ? 'Vai faltar' : 'Vai sobrar';
-      let diffStr = diff > 0 ? '+'+diff : diff;
-      diffValue = `<b style="color:${color};">${diffStr}</b> <span style="color:${color};font-size:.82em;">${msg}</span>`;
-      diffShow = true;
+  let hcsPrevTurno = 0; // HCs previstos para o turno atual
+  
+  // T1: das 04:30 até as 05:59
+  if ((now.hour === 4 && now.min >= 30) || (now.hour === 5 && now.min <= 59)) {
+      hcsPrevTurno = hcsPrevT1Picking + hcsPrevT1Transfer;
+      prevMsg = `Previsão T1: <span style="color:var(--num-t1);font-weight:800;">${hcsPrevTurno}</span> HCs`;
       show = true;
   }
   // T2: das 10:01 até 14:06
@@ -720,80 +762,136 @@ function calcDMO() {
       (now.hour > 10 && now.hour < 14) ||
       (now.hour === 14 && now.min <= 6)
   ){
-      prevMsg = `Previsão T2: <span style="color:var(--num-t2);font-weight:800;">${hcsPrevT2}</span> HCs Picking`;
-      let diff = rfTotalSauron - hcsPrevT2;
-      diffLabel = "Previsão - RFs no Sauron";
-      let color = diff < 0 ? 'var(--num-alt)' : 'var(--num-ok)';
-      let msg = diff < 0 ? 'Vai faltar' : 'Vai sobrar';
-      let diffStr = diff > 0 ? '+'+diff : diff;
-      diffValue = `<b style="color:${color};">${diffStr}</b> <span style="color:${color};font-size:.82em;">${msg}</span>`;
-      diffShow = true;
+      hcsPrevTurno = hcsPrevT2Picking + hcsPrevT2Transfer;
+      prevMsg = `Previsão T2: <span style="color:var(--num-t2);font-weight:800;">${hcsPrevTurno}</span> HCs`;
       show = true;
   }
+  // T3: das 21h até 22:59
+  else if ((now.hour === 21 && now.min >= 0) || (now.hour === 22 && now.min <= 59)) {
+      hcsPrevTurno = hcsPrevT3Picking + hcsPrevT3Transfer;
+      prevMsg = `Previsão T3: <span style="color:var(--num-t3);font-weight:800;">${hcsPrevTurno}</span> HCs`;
+      show = true;
+  }
+  // T4: das 06:00 até 10:00
+  else if ((now.hour >= 6 && now.hour < 10) || (now.hour === 10 && now.min === 0)) {
+      hcsPrevTurno = hcsPrevT4Picking + hcsPrevT4Transfer;
+      prevMsg = `Previsão T4: <span style="color:var(--num-t4);font-weight:800;">${hcsPrevTurno}</span> HCs`;
+      show = true;
+  }
+  // T5: das 14:07 até 20:59
+  else if (
+      (now.hour === 14 && now.min >= 7) ||
+      (now.hour > 14 && now.hour < 20) ||
+      (now.hour === 20 && now.min <= 59)
+  ){
+      hcsPrevTurno = hcsPrevT5Picking + hcsPrevT5Transfer;
+      prevMsg = `Previsão T5: <span style="color:var(--num-t5);font-weight:800;">${hcsPrevTurno}</span> HCs`;
+      show = true;
+  }
+  
+  if (show) {
+      $("resumoPrevBox").innerHTML = prevMsg;
+      $("resumoPrevBox").style.display = "block";
 
-  $("resumoPrevBox").style.display = show ? "block" : "none";
-  $("resumoPrevBox").innerHTML = prevMsg;
-
-  if(diffShow) {
-    $("resumoPrevDiffRow").style.display = "flex";
-    $("resumoPrevDiffLabel").innerHTML = diffLabel;
-    $("resumoPrevDiffValue").innerHTML = diffValue;
+      const diff = rfTotalSauron - hcsPrevTurno;
+      if (diff >= 0) {
+          diffLabel = "RFs Sobrando";
+          diffValue = `+${diff}`;
+          $("resumoPrevDiffValue").className = "resumo-value ok";
+      } else {
+          diffLabel = "RFs Faltando";
+          diffValue = `${diff}`;
+          $("resumoPrevDiffValue").className = "resumo-value alt";
+      }
+      $("resumoPrevDiffLabel").textContent = diffLabel;
+      $("resumoPrevDiffValue").textContent = diffValue;
+      $("resumoPrevDiffRow").style.display = "flex";
+      diffShow = true;
   } else {
-    $("resumoPrevDiffRow").style.display = "none";
+      $("resumoPrevBox").style.display = "none";
+      $("resumoPrevDiffRow").style.display = "none";
   }
 }
 
-document.querySelectorAll("input[type=number]").forEach(e=>{
-  e.addEventListener("input", calcDMO);
-});
-
-document.querySelectorAll('.acrd-header').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    let opened = this.getAttribute('aria-expanded')==='true';
-    this.setAttribute('aria-expanded', !opened ? "true" : "false");
-    this.classList.toggle('collapsed', opened);
-    this.parentElement.classList.toggle('active', !opened);
-    let body = this.parentElement.querySelector('.acrd-body');
-    if(body)body.style.display = opened ? "none" : "block";
-  });
-});
-
-function openResumo() {
-  $("resumoSide").classList.add('active');
-  $("resumoSide").style.display = "flex";
-  $("resumoOverlay").classList.add('active');
-  $("resumoSide").setAttribute("aria-hidden", "false");
-  $("resumoSide").focus();
-  $("mainDashboard").classList.add("blurred");
-  $("topbarMain").classList.add("blurred");
-  $("sauronMainBox").classList.add("blurred");
-  $("datahora").classList.add("blurred");
-}
-function closeResumo() {
-  $("resumoSide").classList.remove('active');
-  $("resumoSide").style.display = "none";
-  $("resumoOverlay").classList.remove('active');
-  $("resumoSide").setAttribute("aria-hidden", "true");
-  $("mainDashboard").classList.remove("blurred");
-  $("topbarMain").classList.remove("blurred");
-  $("sauronMainBox").classList.remove("blurred");
-  $("datahora").classList.remove("blurred");
-}
-$("btnResumo").onclick = openResumo;
-$("fecharResumo").onclick = closeResumo;
-$("resumoOverlay").onclick = closeResumo;
-document.addEventListener('keydown', function(e){
-  if(e.key==='Escape'){ closeResumo(); }
-});
-
-function loopUpdate(){
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
   updateDateHour();
-  calcDMO();
-  setTimeout(loopUpdate, 1000);
-}
-window.onload = function(){
-  loopUpdate();
-};
+  calcDMO(); // Initial calculation
+
+  // Update every 5 seconds
+  setInterval(updateDateHour, 5000);
+
+  // Accordion functionality
+  document.querySelectorAll('.acrd-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const currentActive = document.querySelector('.acrd-card.active');
+      const parentCard = header.closest('.acrd-card');
+      const body = header.nextElementSibling;
+
+      if (parentCard.classList.contains('active')) {
+        parentCard.classList.remove('active');
+        header.classList.add('collapsed');
+        header.setAttribute('aria-expanded', 'false');
+        body.style.display = 'none';
+      } else {
+        if (currentActive) {
+          currentActive.classList.remove('active');
+          currentActive.querySelector('.acrd-header').classList.add('collapsed');
+          currentActive.querySelector('.acrd-header').setAttribute('aria-expanded', 'false');
+          currentActive.querySelector('.acrd-body').style.display = 'none';
+        }
+        parentCard.classList.add('active');
+        header.classList.remove('collapsed');
+        header.setAttribute('aria-expanded', 'true');
+        body.style.display = 'block';
+      }
+    });
+  });
+
+  // Input change listeners for calculations
+  document.querySelectorAll('.entrada-input, .manut-input, .hc-field input').forEach(input => {
+    input.addEventListener('input', calcDMO);
+  });
+
+  // Resumo Side actions
+  const resumoSide = $("resumoSide");
+  const resumoOverlay = $("resumoOverlay");
+  const btnResumo = $("btnResumo");
+  const fecharResumo = $("fecharResumo");
+  const mainDashboard = $("mainDashboard");
+  const topbarMain = $("topbarMain");
+  const sauronMainBox = $("sauronMainBox");
+  const datahoraBox = $("datahora");
+
+  function openResumo() {
+    resumoSide.classList.add('active');
+    resumoOverlay.classList.add('active');
+    mainDashboard.classList.add('blurred');
+    topbarMain.classList.add('blurred');
+    sauronMainBox.classList.add('blurred');
+    datahoraBox.classList.add('blurred');
+    resumoSide.focus();
+  }
+
+  function closeResumo() {
+    resumoSide.classList.remove('active');
+    resumoOverlay.classList.remove('active');
+    mainDashboard.classList.remove('blurred');
+    topbarMain.classList.remove('blurred');
+    sauronMainBox.classList.remove('blurred');
+    datahoraBox.classList.remove('blurred');
+  }
+
+  btnResumo.addEventListener('click', openResumo);
+  fecharResumo.addEventListener('click', closeResumo);
+  resumoOverlay.addEventListener('click', closeResumo);
+  resumoSide.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeResumo();
+    }
+  });
+
+});
 </script>
 </body>
 </html>
