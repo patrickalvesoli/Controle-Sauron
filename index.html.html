@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>GESTÃO DE RFS NO SAURON</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Quicksand:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-bg: #f8f9fc;
+      --card-bg: #fff;
+      --border: #dedfeb;
+      --num-ok: #1976d2;
+      --num-t4: #17527e;
+      --num-t2: #dcad23;
+      --num-alt: #c82f3c;
+      --num-info: #245392;
+      --num-warn: #b08900;
+      --title: #232339;
+      --text: #272738;
+      --muted: #789;
+      --sauron: #554eee;
+      --focus-bg: #e9f0fc;
+      --acrd-header-bg: #f4f5fa;
+      --acrd-header-hover: #ececff;
+    }
+    html, body {
+      min-height:100%;
+      margin:0;
+      padding:0;
+      background: var(--main-bg);
+      color: var(--text);
+      font-family: 'Montserrat', 'Quicksand', Arial, sans-serif;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    body { position: relative; }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto 0 auto;
+      padding: 0 16px;
+      min-height: 80px;
+    }
+    header {
+      text-align: center;
+      padding:24px 0 10px 0;
+      font-size: 2.05rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      color: var(--sauron);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      background: none;
+      border-bottom: 0;
+      margin-bottom:0;
+      text-shadow:
+          0 0 6px #b2b1ff88,
+          0 0 16px #d9d6fe44,
+          0 0 2px #7c7df066;
+    }
+    .btn-resumo {
+      background: var(--sauron);
+      color: #fff;
+      font-size: 1rem;
+      letter-spacing:1.1px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: bold;
+      border: none;
+      border-radius: 2.1em;
+      padding: 9px 22px 9px 18px;
+      margin:0;
+      box-shadow:0 5px 24px #554eee14;
+      cursor:pointer;
+      transition:.16s;
+      position:relative;
+      display: flex;
+      align-items: center;
+      gap:8px;
+      outline: none;
+    }
+    .btn-resumo:active,
+    .btn-resumo:focus,
+    .btn-resumo:hover {
+      background: #2117ac;
+      color:#fff;
+      box-shadow:0 6px 27px #554eee33;
+    }
+    .btn-resumo .ic { font-size:1.26em; vertical-align:middle; }
+    .top-highlight-sauron {
+      max-width:340px;
+      margin: 16px auto 24px auto;
+      background: linear-gradient(105deg,#efedfe 60%,#e2ebff 95%);
+      border: 3.5px solid var(--sauron);
+      box-shadow: 0 4px 30px #8179ec18;
+      border-radius: 18px;
+      padding: 18px 18px 15px 18px;
+      text-align:center;
+      position: relative;
+    }
+    .top-highlight-sauron-label {
+      font-size: 1.03em;
+      letter-spacing:2px;
+      color: var(--sauron);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-family: 'Montserrat',Arial,sans-serif;
+      margin-bottom: 1px;
+    }
+    .top-highlight-sauron-num {
+      font-size: 2.9em;
+      font-weight: 900;
+      color: var(--sauron);
+      letter-spacing: 2px;
+      text-shadow: 0 2px 19px #b2b5fe55, 0 1px 1px #fff;
+      margin-top: 7px;
+      margin-bottom: 0;
+      font-family: 'Montserrat',Arial,sans-serif;
+      line-height:1.06em;
+      display:inline-block;
+      padding:0 0.15em;
+    }
+    .databox {
+      font-size:1em;
+      color: var(--muted);
+      margin:8px 0 19px 0;
+      display:inline-block;
+      background: #f3f4f7;
+      padding:4px 14px;
+      border-radius:8px;
+      user-select:all;
+      font-weight:normal;
+      letter-spacing:1px;
+      border: 1px solid var(--border);
+    }
+    .dashboard-main {
+      max-width: 890px;
+      margin: 0 auto 40px auto;
+      padding:0 0 30px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 19px;
+      transition: filter 0.3s;
+    }
+    .dashboard-main.blurred,
+    .top-bar.blurred,
+    .top-highlight-sauron.blurred,
+    .databox.blurred {
+      filter: blur(4px) brightness(0.96) grayscale(0.1);
+      pointer-events: none;
+      user-select: none;
+    }
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 17px;
+    }
+    .acrd-card {
+      background: var(--card-bg);
+      border-radius: 13px;
+      border: 1.6px solid var(--border);
+      box-shadow: 0 2px 16px #dadffa13;
+      margin-bottom:0;
+      overflow: hidden;
+      transition: box-shadow .15s, border-color .15s;
+    }
+    .acrd-card.active {
+      border-color: var(--num-ok);
+      box-shadow:0 4px 24px #baccff22;
+    }
+    .acrd-header {
+      cursor: pointer;
+      background:var(--acrd-header-bg);
+      padding: 18px 25px;
+      display: flex;
+      align-items: center;
+      user-select: none;
+      border:none;
+      border-bottom:1px solid var(--border);
+      font-weight: 900;
+      font-size: 1.13em;
+      letter-spacing:.6px;
+      color: var(--title);
+      font-family: 'Montserrat', Arial, sans-serif;
+      outline: none;
+      transition:.13s;
+      width:100%;
+    }
+    .acrd-header:focus, .acrd-header:hover {
+      background: var(--acrd-header-hover);
+    }
+    .acrd-header .arrow {
+      font-size: 1.25em;
+      margin-right: 14px;
+      transition:.18s;
+      color: var(--num-ok);
+      min-width: 15px;
+    }
+    .acrd-header.collapsed .arrow { transform: rotate(-90deg); color: var(--border);}
+    .acrd-body {
+      padding: 18px 24px 13px 32px;
+      animation: fadein .18s;
+      background:transparent;
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(-10px);}
+      to   { opacity: 1; transform:translateY(0);}
+    }
+    .fieldsetDMO {
+      display:flex; flex-direction:column; gap:18px; position:relative;
+    }
+    .campo-t4, .campo-t2, .campo-sauron {
+      border-radius: 7px;
+      margin-bottom:5px;
+      padding:8px 10px 8px 18px;
+      font-size:1.02em;
+    }
+    .campo-t4 {border-left: 6px solid var(--num-t4);background: #e6f0fb;}
+    .campo-t2 {border-left: 6px solid var(--num-t2);background: #fffbe4;}
+    .campo-sauron {border-left: 6px solid var(--sauron);background: #efedfe;}
+    label {
+      font-weight: 700;
+      color: #222e;
+      font-size: 1.08em;
+      font-family: 'Montserrat', sans-serif;
+      margin-right: 0.5em;
+      margin-bottom: 0;
+    }
+    .campo-t4 label { color: var(--num-t4); }
+    .campo-t2 label { color: var(--num-t2); }
+    .campo-sauron label { color: var(--sauron);}
+    .entrada-input,
+    .manut-input {
+      width: 66px;
+      font-size: 1.17em;
+      border: 1.3px solid var(--border);
+      border-radius:6px;
+      background: #f9fbff;
+      color: #1d2432;
+      font-weight: bold;
+      padding: 5px 12px 5px 12px;
+      font-family: inherit;
+      margin-left: 9px;
+    }
+    .entrada-input:focus,
+    .manut-input:focus {
+      outline: none;
+      border-color: var(--num-t4);
+      background: #e3f5fd;
+    }
+    .resultsDMO {
+      margin-top:12px;
+      display:flex;
+      flex-direction:column;
+      gap: 9px;
+    }
+    .resultDMO {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:1.10em;
+      background: #f7fafd;
+      border-radius:7px;
+      padding:8px 16px 7px 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom:2px;
+      border-left: 5px solid var(--num-info);
+    }
+    .resultDMO.r-info   { border-left: 5px solid var(--num-info);}
+    .resultDMO.r-dang   { border-left: 5px solid var(--num-alt);}
+    .resultDMO.r-suc    { border-left: 5px solid var(--num-ok);}
+    .resultDMO.r-warn   { border-left: 5px solid var(--num-warn);}
+    .resultDMO strong { font-weight: 900; color: #16244c; }
+    .resultDMO .num {
+      font-size: 1.44em;
+      line-height:.99em;
+      font-weight: 900;
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: var(--num-info);
+      margin-left:12px;
+      background: none !important;
+    }
+    .resultDMO.r-dang .num { color: var(--num-alt);}
+    .resultDMO.r-suc  .num { color: var(--num-ok);}
+    .resultDMO.r-info  .num { color: var(--num-info);}
+    .resultDMO.r-warn .num { color: var(--num-warn);}
+    .picking-destaque {
+      border: 2.5px solid var(--num-ok);
+      background: linear-gradient(105deg,#eaf4ff 60%,#eafdfe 100%);
+      box-shadow: 0 4px 12px #b6d7fb24;
+      z-index: 2;
+      border-radius: 7px;
+      margin-bottom:0;
+    }
+    .picking-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 12px;
+    }
+    .picking-icone {
+      font-size: 1.25em;
+      vertical-align: middle;
+    }
+    .picking-titulo {
+      font-family: 'Montserrat',Arial,sans-serif;
+      font-size: 1.08em;
+      font-weight: 900;
+      letter-spacing:0.4px;
+      color: var(--num-ok);
+      text-shadow: 0 2px 11px #aadaff45;
+    }
+    .picking-fields {
+      gap: 10px;
+    }
+    .picking-field {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 3.5px;
+    }
+    .picking-field label {
+      font-size: 1.07em;
+      color: var(--num-ok);
+      margin-bottom: -2px;
+    }
+    .picking-field .hint {
+      font-size: 0.98em;
+      color: #3994d7;
+      margin-left: 2px;
+      margin-top: 1px;
+      font-family: 'Quicksand','Montserrat',Arial,sans-serif;
+      font-weight: 600;
+      opacity:0.85;
+    }
+    .picking-field input[type="number"]{
+      background: #fff;
+      border: 1.3px solid #90caf9;
+      padding-left: 10px;
+      color: #1e293b;
+      font-weight: bold;
+      font-size: 1.09em;
+      border-radius: 6px;
+      margin-top: 2px;
+      width: 68px;
+    }
+    .manut-card {
+      border-left: 6px solid #c2a22b;
+      background: #fcf7e1;
+      box-shadow: 0 2px 19px #dac88416;
+      margin-bottom:0;
+    }
+    .manut-label {
+      font-size: 1.14em;
+      color: #a18613;
+      font-weight: bold;
+      letter-spacing: .8px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin-bottom: 8px;
+    }
+    .manut-input {
+      width: 68px;
+      background: #fffccf;
+      border: 1.6px solid #dac884;
+      border-radius: 8px;
+      font-size: 1.12em;
+      font-family: inherit;
+      color: #937f18;
+      font-weight: bold;
+      padding: 4px 13px 4px 10px;
+      margin-left: 9px;
+    }
+    .manut-input:focus {
+      border-color:#bfa417;
+      outline: none;
+      background: #e9e3be;
+    }
+    .resumo-side {
+      display: none;
+      position: fixed;
+      top:0;
+      right: 0;
+      height: 100vh;
+      width: 400px;
+      box-shadow: -7px 0 31px #554eee30;
+      z-index: 1002;
+      background: #fafafd;
+      border-left: 4.2px solid var(--sauron);
+      padding:38px 35px 42px 32px;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 260px;
+      max-width:98vw;
+      outline:none;
+      transition: none;
+    }
+    .resumo-side.active {
+      display: flex;
+    }
+    .resumo-title {
+      font-size:1.5em;
+      color:var(--sauron);
+      font-weight:900;
+      letter-spacing:1.4px;
+      font-family:'Montserrat',Arial,sans-serif;
+      text-shadow:0 3px 15px #554eee28;
+      margin-bottom:22px;
+      text-align:left;
+    }
+    .resumo-datahora {
+      font-size:.99em;
+      letter-spacing:.5px;
+      color: #8686b0;
+      margin-bottom:22px;
+      padding-bottom:10px;
+      border-bottom: 1.2px dotted #dddffa;
+      font-family:'Quicksand','Montserrat',sans-serif;
+    }
+    .resumo-items {
+      display:flex;
+      flex-direction: column;
+      gap:24px;
+    }
+    .resumo-row {
+      font-size:1.12em;
+      display:flex;align-items: center;justify-content:space-between;
+      padding:14px 0;
+      border-bottom: 1px solid #eceefe;
+      font-family: 'Montserrat',Arial,sans-serif;
+    }
+    .resumo-label {
+      color: #616199;
+      font-weight:700;
+      letter-spacing:.4px;
+    }
+    .resumo-value {
+      color: #242464;
+      font-weight:900;
+      font-size:1.28em;
+      display:inline-block;
+      min-width:52px;
+      letter-spacing:1.1px;
+    }
+    .resumo-value.sauron {color: var(--sauron);}
+    .resumo-value.ok {color: var(--num-ok);}
+    .resumo-value.alt {color: var(--num-alt);}
+    .resumo-close-btn {
+      position:absolute; top:13px; right:17px;
+      background: none;
+      border:none;
+      color: #554eee;
+      font-size: 2em;
+      font-weight:900;
+      cursor:pointer;
+      line-height:1;
+      padding:0;
+      transition:.18s;
+      z-index:10;
+    }
+    .resumo-close-btn:hover,
+    .resumo-close-btn:focus {
+      color: #20116e;
+      background: #ececff;
+    }
+    .resumo-prev {
+      font-size:1.12em;
+      padding:13px 17px 13px 17px;
+      background:#f6f6ff;
+      color:var(--num-warn);
+      border:1.6px dashed #a1a1ff3b;
+      border-radius: 8px;
+      margin: 16px 0 0 0;
+      font-weight:700;
+      text-align:center;
+      letter-spacing:.7px;
+    }
+    .resumo-overlay {
+      position:fixed;
+      top:0;left:0;width:100vw;height:100vh;
+      z-index:1001;
+      background:rgba(40,36,94,0.07);
+      backdrop-filter: blur(3.5px);
+      display:none;
+      opacity:1;
+      transition:.17s;
+    }
+    .resumo-overlay.active {
+      display:block;
+      opacity:1;
+    }
+    footer {
+      text-align:center;
+      color:#65629b;
+      font-size: 1.01em;
+      letter-spacing: .8px;
+      margin: 40px auto 24px auto;
+      font-family: 'Montserrat', 'Quicksand', Arial, sans-serif;
+      opacity: .86;
+    }
+    @media (max-width:700px) {
+      html,body{font-size:14px;}
+      .resumo-side {width:97vw;padding:20px 4vw 20px 6vw;}
+      .resumo-title{font-size:1.17em;}
+      .resumo-row{font-size:1em;padding:12px 0;}
+    }
+  </style>
+</head>
+<body>
+<div class="top-bar" id="topbarMain">
+  <header>GESTÃO DE RFS NO SAURON</header>
+  <button class="btn-resumo" id="btnResumo" title="Ver resumo detalhado">
+    <span class="ic">📊</span> Resumo Detalhado
+  </button>
+</div>
+<div class="top-highlight-sauron" id="sauronMainBox">
+    <div class="top-highlight-sauron-label">TOTAL DE RFs EM SAURON</div>
+    <span class="top-highlight-sauron-num" id="rfTotalSauron">0</span>
+</div>
+<div class="databox" id="datahora"></div>
+<div class="dashboard-main" id="mainDashboard">
+  <div class="accordion">
+
+    <section class="acrd-card active">
+      <button type="button" class="acrd-header" aria-expanded="true">
+        <span class="arrow">▼</span> RFs para Entrada
+      </button>
+      <div class="acrd-body">
+        <div class="fieldsetDMO" style="gap:18px;">
+          <div class="campo-t4">
+            <label for="rfT4">RFs Disponíveis Para Entrada do T4</label>
+            <input type="number" id="rfT4" class="entrada-input" value="0" min="0">
+          </div>
+          <div class="campo-t2">
+            <label for="rfT2">RFs Disponíveis Para Entrada do T2</label>
+            <input type="number" id="rfT2" class="entrada-input" value="0" min="0">
+          </div>
+          <div class="campo-sauron">
+            <label for="rfSauron">RFs em Sauron Para Movimentação</label>
+            <input type="number" id="rfSauron" class="entrada-input" value="0" min="0">
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="acrd-card active">
+      <button type="button" class="acrd-header" aria-expanded="true">
+        <span class="arrow">▼</span> Picking &amp; Transfer
+      </button>
+      <div class="acrd-body">
+        <div class="picking-header" style="margin-left:4px">
+          <span class="picking-icone">🚚</span>
+          <span class="picking-titulo">Picking &amp; Transfer</span>
+        </div>
+        <div class="fieldsetDMO picking-fields">
+          <div class="picking-field">
+            <label for="hcT1"><b>HCs T1 (DMO)</b></label>
+            <input type="number" id="hcT1" value="0" min="0">
+            <span class="hint">Conferentes DMO direto</span>
+          </div>
+          <div class="picking-field">
+            <label for="hcTrans"><b>HCs Transfer (MWH)</b></label>
+            <input type="number" id="hcTrans" value="0" min="0">
+            <span class="hint">Conferentes em transferências</span>
+          </div>
+          <div class="picking-field">
+            <label for="hcsPrevT4"><b>HCs Prev. T4 Picking</b></label>
+            <input type="number" id="hcsPrevT4" value="0" min="0">
+            <span class="hint">Previstos para Picking T4</span>
+          </div>
+          <div class="picking-field">
+            <label for="hcsPrevT2"><b>HCs Prev. T2 Picking</b></label>
+            <input type="number" id="hcsPrevT2" value="0" min="0">
+            <span class="hint">Previstos para Picking T2</span>
+          </div>
+        </div>
+        <div class="resultsDMO picking-results">
+          <div class="resultDMO r-info picking-total">
+            <strong>Total Picking T1</strong>
+            <span class="num picking-num" id="totalPickingT1">0</span>
+          </div>
+          <div class="resultDMO r-info picking-total2">
+            <strong>Total Picking T1+T4</strong>
+            <span class="num picking-num" id="totalT1T4">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="acrd-card">
+      <button type="button" class="acrd-header collapsed" aria-expanded="false">
+        <span class="arrow">▼</span> RFs para Manutenção
+      </button>
+      <div class="acrd-body" style="display:none;">
+        <div class="fieldsetDMO">
+          <label class="manut-label" for="rfManut">RFs para Manutenção</label>
+          <input type="number" id="rfManut" class="manut-input" value="0" min="0">
+        </div>
+      </div>
+    </section>
+    <section class="acrd-card">
+      <button type="button" class="acrd-header collapsed" aria-expanded="false">
+        <span class="arrow">▼</span> Situação Geral
+      </button>
+      <div class="acrd-body" style="display:none;">
+        <div class="resultsDMO">
+          <div class="resultDMO r-suc">
+            <strong>Total RFs Operação</strong>
+            <span class="num" id="totalRfsOperacao">0</span>
+          </div>
+          <div class="resultDMO r-suc">
+            <strong>Total REPs Hora Pico</strong>
+            <span class="num" id="totalRepsHoraPico">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Resumo detalhado lateral -->
+<div class="resumo-overlay" id="resumoOverlay"></div>
+<aside class="resumo-side" id="resumoSide" tabindex="-1" aria-hidden="true" aria-label="Resumo detalhado">
+  <button class="resumo-close-btn" title="Fechar resumo" id="fecharResumo" aria-label="Fechar resumo">&times;</button>
+  <div class="resumo-title">Resumo Detalhado</div>
+  <div class="resumo-datahora" id="resumoDataHora"></div>
+  <div class="resumo-items" id="resumoItems">
+    <div class="resumo-row">
+      <span class="resumo-label">Total de RFs no Sauron</span>
+      <span class="resumo-value sauron" id="resumoRFSauron">0</span>
+    </div>
+    <div class="resumo-row">
+      <span class="resumo-label">Total RFs Em Uso</span>
+      <span class="resumo-value ok" id="resumoTotalPicking">0</span>
+    </div>
+    <div class="resumo-row">
+      <span class="resumo-label">RFs para Manutenção</span>
+      <span class="resumo-value alt" id="resumoManut">Não</span>
+    </div>
+    <div class="resumo-prev" id="resumoPrevBox" style="display:none;"></div>
+    <div class="resumo-row" id="resumoPrevDiffRow" style="display:none;">
+      <span class="resumo-label" id="resumoPrevDiffLabel"></span>
+      <span class="resumo-value" id="resumoPrevDiffValue"></span>
+    </div>
+  </div>
+</aside>
+
+<footer>
+  Desenvolvido por Patrick Alves De Oliveira Maciel
+</footer>
+
+<script>
+function $(id){return document.getElementById(id);}
+function pad(n){return n<10?'0'+n:n;}
+function getNowBR(){
+  const d = new Date();
+  let h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
+  return {
+    date: pad(d.getDate())+"/"+pad(d.getMonth()+1)+"/"+d.getFullYear(),
+    time: pad(h)+":"+pad(m)+":"+pad(s),
+    hour: h, min: m
+  };
+}
+
+function updateDateHour(){
+  const now = getNowBR();
+  $("datahora").textContent = "Atualizado: "+ now.date +" • "+ now.time;
+  $("resumoDataHora").textContent = now.date +" • "+ now.time;
+}
+
+// Aqui está a ALTERAÇÃO para os horários, mantém tudo original exceto o bloco dos horários!
+function calcDMO() {
+  let rfT4 = +$("rfT4").value||0,
+      rfT2 = +$("rfT2").value||0,
+      rfSauron = +$("rfSauron").value||0,
+      hcT1 = +$("hcT1").value||0,
+      hcTrans = +$("hcTrans").value||0,
+      hcsPrevT4 = +$("hcsPrevT4").value||0,
+      hcsPrevT2 = +$("hcsPrevT2").value||0,
+      rfManut = +$("rfManut").value||0;
+
+  let rfTotalSauron = rfT4 + rfT2 + rfSauron;
+  let totalPickingT1 = hcT1 + hcTrans;
+  let totalT1T4 = hcT1 + hcTrans + hcsPrevT4;
+  let totalRepsHoraPico = totalT1T4;
+  let totalRfsOperacao = rfTotalSauron + totalT1T4;
+
+  $("rfTotalSauron").textContent = rfTotalSauron;
+  $("totalPickingT1").textContent = totalPickingT1;
+  $("totalT1T4").textContent = totalT1T4;
+  $("totalRepsHoraPico").textContent = totalRepsHoraPico;
+  $("totalRfsOperacao").textContent = totalRfsOperacao;
+  $("resumoRFSauron").textContent = rfTotalSauron;
+  $("resumoTotalPicking").textContent = totalT1T4;
+  $("resumoManut").textContent = rfManut > 0 ? `${rfManut} RF${rfManut>1?'s':''}` : "Não";
+
+  // --- PREVISÃO (ajustado para novo horário T4 e T2)
+  const now = getNowBR();
+  let prevMsg = "";
+  let show = false;
+  let diffLabel = "";
+  let diffValue = "";
+  let diffShow = false;
+
+  // T4: das 06:00 até 10:00
+  if ((now.hour >= 6 && now.hour <= 10 && !(now.hour === 10 && now.min > 0))) {
+      prevMsg = `Previsão T4: <span style="color:var(--num-t4);font-weight:800;">${hcsPrevT4}</span> HCs Picking`;
+      let diff = rfTotalSauron - hcsPrevT4;
+      diffLabel = "Previsão - RFs no Sauron";
+      let color = diff < 0 ? 'var(--num-alt)' : 'var(--num-ok)';
+      let msg = diff < 0 ? 'Vai faltar' : 'Vai sobrar';
+      let diffStr = diff > 0 ? '+'+diff : diff;
+      diffValue = `<b style="color:${color};">${diffStr}</b> <span style="color:${color};font-size:.82em;">${msg}</span>`;
+      diffShow = true;
+      show = true;
+  }
+  // T2: das 10:01 até 14:06
+  else if (
+      (now.hour === 10 && now.min >= 1) ||
+      (now.hour > 10 && now.hour < 14) ||
+      (now.hour === 14 && now.min <= 6)
+  ){
+      prevMsg = `Previsão T2: <span style="color:var(--num-t2);font-weight:800;">${hcsPrevT2}</span> HCs Picking`;
+      let diff = rfTotalSauron - hcsPrevT2;
+      diffLabel = "Previsão - RFs no Sauron";
+      let color = diff < 0 ? 'var(--num-alt)' : 'var(--num-ok)';
+      let msg = diff < 0 ? 'Vai faltar' : 'Vai sobrar';
+      let diffStr = diff > 0 ? '+'+diff : diff;
+      diffValue = `<b style="color:${color};">${diffStr}</b> <span style="color:${color};font-size:.82em;">${msg}</span>`;
+      diffShow = true;
+      show = true;
+  }
+
+  $("resumoPrevBox").style.display = show ? "block" : "none";
+  $("resumoPrevBox").innerHTML = prevMsg;
+
+  if(diffShow) {
+    $("resumoPrevDiffRow").style.display = "flex";
+    $("resumoPrevDiffLabel").innerHTML = diffLabel;
+    $("resumoPrevDiffValue").innerHTML = diffValue;
+  } else {
+    $("resumoPrevDiffRow").style.display = "none";
+  }
+}
+
+document.querySelectorAll("input[type=number]").forEach(e=>{
+  e.addEventListener("input", calcDMO);
+});
+
+document.querySelectorAll('.acrd-header').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    let opened = this.getAttribute('aria-expanded')==='true';
+    this.setAttribute('aria-expanded', !opened ? "true" : "false");
+    this.classList.toggle('collapsed', opened);
+    this.parentElement.classList.toggle('active', !opened);
+    let body = this.parentElement.querySelector('.acrd-body');
+    if(body)body.style.display = opened ? "none" : "block";
+  });
+});
+
+function openResumo() {
+  $("resumoSide").classList.add('active');
+  $("resumoSide").style.display = "flex";
+  $("resumoOverlay").classList.add('active');
+  $("resumoSide").setAttribute("aria-hidden", "false");
+  $("resumoSide").focus();
+  $("mainDashboard").classList.add("blurred");
+  $("topbarMain").classList.add("blurred");
+  $("sauronMainBox").classList.add("blurred");
+  $("datahora").classList.add("blurred");
+}
+function closeResumo() {
+  $("resumoSide").classList.remove('active');
+  $("resumoSide").style.display = "none";
+  $("resumoOverlay").classList.remove('active');
+  $("resumoSide").setAttribute("aria-hidden", "true");
+  $("mainDashboard").classList.remove("blurred");
+  $("topbarMain").classList.remove("blurred");
+  $("sauronMainBox").classList.remove("blurred");
+  $("datahora").classList.remove("blurred");
+}
+$("btnResumo").onclick = openResumo;
+$("fecharResumo").onclick = closeResumo;
+$("resumoOverlay").onclick = closeResumo;
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape'){ closeResumo(); }
+});
+
+function loopUpdate(){
+  updateDateHour();
+  calcDMO();
+  setTimeout(loopUpdate, 1000);
+}
+window.onload = function(){
+  loopUpdate();
+};
+</script>
+</body>
+</html>
