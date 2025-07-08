@@ -32,6 +32,17 @@
       --shadow-card-hover: 0 8px 32px #302ad91c, 0 1.5px 10px #554eee26;
       --shadow-inset: 0 0 0.5px 1.5px #b8aaff11;
       --tr: .25s cubic-bezier(.66, .02, .27, 1.32);
+
+      /* Novas cores para RFs Emprestados - áreas */
+      --color-packing: #4CAF50; /* Verde */
+      --color-shipping: #FFC107; /* Amarelo */
+      --color-retiro: #00BCD4; /* Ciano */
+      --color-putwall: #9C27B0; /* Roxo */
+      --color-putaway: #FF5722; /* Laranja */
+      --color-returns: #F44336; /* Vermelho */
+      --color-inventario: #607D8B; /* Cinza azulado */
+      --color-qualidade: #2196F3; /* Azul */
+      --color-indiretos-picking: #795548; /* Marrom */
     }
     html, body {
       min-height:100%;
@@ -78,7 +89,7 @@
       color: #3d379e;
       text-shadow:
           0 0 18px #a79cff5c,
-          0 0 35px #554eeeb4;
+          0 0 35px #554eeeab;
     }
     .btn-resumo {
       background: var(--sauron);
@@ -286,7 +297,7 @@
       font-size: 1.25em;
       margin-right: 14px;
       transition:transform .22s cubic-bezier(.5,1.6,.33,1),
-                 color var(--tr);
+                  color var(--tr);
       color: var(--num-ok);
       min-width: 15px;
       filter: drop-shadow(0 1.5px 2.5px #b1dcff60);
@@ -305,7 +316,10 @@
     .fieldsetDMO {
       display:flex; flex-direction:column; gap:18px; position:relative;
     }
-    .campo-t1, .campo-t2, .campo-t3, .campo-t4, .campo-t5, .campo-sauron {
+    .campo-t1, .campo-t2, .campo-t3, .campo-t4, .campo-t5, .campo-sauron,
+    .campo-emprestado, .campo-packing, .campo-shipping, .campo-retiro,
+    .campo-putwall, .campo-putaway, .campo-returns, .campo-inventario,
+    .campo-qualidade, .campo-indiretos-picking {
       border-radius: 7px;
       margin-bottom:5px;
       padding:8px 10px 8px 18px;
@@ -320,6 +334,20 @@
     .campo-t4 {border-left: 6px solid var(--num-t4);background: #e6f0fb;}
     .campo-t5 {border-left: 6px solid var(--num-t5);background: #fffae4;}
     .campo-sauron {border-left: 6px solid var(--sauron);background: #efedfe;}
+    .campo-emprestado {border-left: 6px solid var(--num-info);background: #e6f7ff;} /* Novo estilo para RFs emprestados */
+
+    /* Estilos para as novas áreas */
+    .campo-packing {border-left: 6px solid var(--color-packing); background: #e8f5e9;}
+    .campo-shipping {border-left: 6px solid var(--color-shipping); background: #fffde7;}
+    .campo-retiro {border-left: 6px solid var(--color-retiro); background: #e0f7fa;}
+    .campo-putwall {border-left: 6px solid var(--color-putwall); background: #f3e5f5;}
+    .campo-putaway {border-left: 6px solid var(--color-putaway); background: #fbe9e7;}
+    .campo-returns {border-left: 6px solid var(--color-returns); background: #ffebee;}
+    .campo-inventario {border-left: 6px solid var(--color-inventario); background: #eceff1;}
+    .campo-qualidade {border-left: 6px solid var(--color-qualidade); background: #e3f2fd;}
+    .campo-indiretos-picking {border-left: 6px solid var(--color-indiretos-picking); background: #efebe9;}
+
+
     label {
       font-weight: 700;
       color: #222e;
@@ -334,8 +362,24 @@
     .campo-t4 label { color: var(--num-t4); }
     .campo-t5 label { color: var(--num-t5); }
     .campo-sauron label { color: var(--sauron);}
+    .campo-emprestado label { color: var(--num-info);} /* Cor da label para RFs emprestados */
+
+    /* Cores das labels para as novas áreas */
+    .campo-packing label { color: var(--color-packing); }
+    .campo-shipping label { color: var(--color-shipping); }
+    .campo-retiro label { color: var(--color-retiro); }
+    .campo-putwall label { color: var(--color-putwall); }
+    .campo-putaway label { color: var(--color-putaway); }
+    .campo-returns label { color: var(--color-returns); }
+    .campo-inventario label { color: var(--color-inventario); }
+    .campo-qualidade label { color: var(--color-qualidade); }
+    .campo-indiretos-picking label { color: var(--color-indiretos-picking); }
+
+
     .entrada-input,
-    .manut-input {
+    .manut-input,
+    .emprestado-input, /* Adicionado .emprestado-input */
+    .area-input { /* Nova classe para os inputs das áreas */
       width: 67px;
       font-size: 1.17em;
       border: 1.7px solid var(--border-dark);
@@ -350,7 +394,9 @@
       transition: border var(--tr), box-shadow var(--tr), background var(--tr);
     }
     .entrada-input:focus,
-    .manut-input:focus {
+    .manut-input:focus,
+    .emprestado-input:focus, /* Adicionado .emprestado-input:focus */
+    .area-input:focus { /* Nova classe para os inputs das áreas */
       outline: none;
       border-color: var(--num-t4);
       background: #e3f5fd;
@@ -474,6 +520,43 @@
       outline: none;
       background: #e9e3be;
     }
+
+    /* Novo estilo para RFs emprestados (geral) */
+    .emprestado-card {
+      border-left: 6px solid var(--num-info);
+      background: #e6f7ff;
+      box-shadow: 0 2px 19px #b2d6f216;
+      margin-bottom:0;
+    }
+    .emprestado-label {
+      font-size: 1.14em;
+      color: var(--num-info);
+      font-weight: bold;
+      letter-spacing: .8px;
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin-bottom: 8px;
+    }
+    /* Estilo para os inputs das áreas */
+    .area-input {
+      background: #f0f8ff; /* Fundo padrão mais claro para os inputs de área */
+      border: 1.6px solid var(--border-dark); /* Borda padrão mais escura */
+      border-radius: 8px;
+      font-size: 1.12em;
+      font-family: inherit;
+      color: #245392; /* Cor de texto padrão para inputs de área */
+      font-weight: bold;
+      padding: 4px 13px 4px 10px;
+      margin-left: 9px;
+      box-shadow:0 1px 4px rgba(0, 0, 0, 0.05) inset;
+      transition: border var(--tr), box-shadow var(--tr), background var(--tr);
+    }
+    .area-input:focus {
+      border-color: var(--num-info); /* Cor da borda ao focar */
+      outline: none;
+      background: #d9edf8; /* Fundo ao focar */
+    }
+
+
     .resumo-side {
       display: none;
       position: fixed;
@@ -550,6 +633,19 @@
     .resumo-value.sauron {color: var(--sauron);}
     .resumo-value.ok {color: var(--num-ok);}
     .resumo-value.alt {color: var(--num-alt);}
+    .resumo-value.info {color: var(--num-info);} /* Para o total de emprestados */
+
+    /* Cores dos valores no resumo */
+    .resumo-value.packing { color: var(--color-packing); }
+    .resumo-value.shipping { color: var(--color-shipping); }
+    .resumo-value.retiro { color: var(--color-retiro); }
+    .resumo-value.putwall { color: var(--color-putwall); }
+    .resumo-value.putaway { color: var(--color-putaway); }
+    .resumo-value.returns { color: var(--color-returns); }
+    .resumo-value.inventario { color: var(--color-inventario); }
+    .resumo-value.qualidade { color: var(--color-qualidade); }
+    .resumo-value.indiretos-picking { color: var(--color-indiretos-picking); }
+
     .resumo-close-btn {
       position:absolute;
       top:10px;
@@ -613,7 +709,6 @@
       .resumo-title{font-size:1.17em;}
       .resumo-row{font-size:1em;padding:8px 0;}
       .top-bar {flex-direction: column; align-items: stretch; padding: 10px;}
-      .btn-resumo { width: 100%; justify-content: center; padding: 8px; margin-bottom: 5px;}
       header {padding: 10px 0; font-size: 1.7rem; text-align: left;}
       .top-highlight-sauron-num { font-size: 3em; }
     }
@@ -630,12 +725,10 @@
     <div class="top-highlight-sauron-label">TOTAL DE RFs EM SAURON</div>
     <span class="top-highlight-sauron-num" id="rfTotalSauron">0</span>
 </div>
-<!-- NOVA databox de data/hora central -->
 <div id="datahora">
   <span class="icone">⏰</span>
   <span id="datahoraConteudo"></span>
 </div>
-<!-- FIM databox data/hora -->
 <button class="btn-resumo btn-small" id="btnOutDMO" type="button" style="margin-top:8px; margin-bottom:8px;">
   <span class="ic">📄</span> DMO Outbound | SP04
 </button>
@@ -644,7 +737,6 @@
 </button>
 <div class="dashboard-main" id="mainDashboard">
   <div class="accordion">
-    <!-- (os accordions e campos seguem igual, não reduz aqui para salvar espaço) -->
     <section class="acrd-card">
       <button type="button" class="acrd-header collapsed" aria-expanded="false">
         <span class="arrow">▼</span> RFs para Entrada
@@ -741,6 +833,51 @@
 
     <section class="acrd-card">
       <button type="button" class="acrd-header collapsed" aria-expanded="false">
+        <span class="arrow">▼</span> RFs Emprestados (Outros Setores)
+      </button>
+      <div class="acrd-body" style="display:none;">
+        <div class="fieldsetDMO" style="gap:18px;">
+          <div class="campo-packing">
+            <label for="rfPacking">RFs - Packing</label>
+            <input type="number" id="rfPacking" class="area-input" value="0" min="0">
+          </div>
+          <div class="campo-shipping">
+            <label for="rfShipping">RFs - Shipping</label>
+            <input type="number" id="rfShipping" class="area-input" value="0" min="0">
+          </div>
+          <div class="campo-retiro">
+            <label for="rfRetiro">RFs - Retiro</label>
+            <input type="number" id="rfRetiro" class="area-input" value="0" min="0">
+          </div>
+          <div class="campo-putwall">
+            <label for="rfPutWall">RFs - PutWall</label>
+            <input type="number" id="rfPutWall" class="area-input" value="0" min="0">
+          </div>
+          <div class="campo-putaway">
+            <label for="rfPutAway">RFs - PutAway</label>
+            <input type="number" id="rfPutAway" class="area-input" value="0" min="0">
+          </div>
+          <div class="campo-returns">
+            <label for="rfReturns">RFs - Returns</label>
+            <input type="number" id="rfReturns" class="area-input" value="0" min="0">
+          </div>
+          <div class="campo-inventario">
+            <label for="rfInventario">RFs - Inventário</label>
+            <input type="number" id="rfInventario" class="area-input" value="0" min="0">
+          </div>
+          <div class="campo-qualidade">
+            <label for="rfQualidade">RFs - Qualidade</label>
+            <input type="number" id="rfQualidade" class="area-input" value="0" min="0">
+          </div>
+          <div class="campo-indiretos-picking">
+            <label for="rfIndiretosPicking">RFs - Indiretos Picking</label>
+            <input type="number" id="rfIndiretosPicking" class="area-input" value="0" min="0">
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="acrd-card">
+      <button type="button" class="acrd-header collapsed" aria-expanded="false">
         <span class="arrow">▼</span> RFs para Manutenção
       </button>
       <div class="acrd-body" style="display:none;">
@@ -760,11 +897,7 @@
             <strong>Total RFs Operação</strong>
             <span class="num" id="totalRfsOperacao">0</span>
           </div>
-          <div class="resultDMO r-suc">
-            <strong>Total HCs Previstos</strong>
-            <span class="num" id="totalRepsHoraPico">0</span>
           </div>
-        </div>
       </div>
     </section>
   </div>
@@ -781,12 +914,12 @@
       <span class="resumo-value sauron" id="resumoRFSauron">0</span>
     </div>
     <div class="resumo-row">
-      <span class="resumo-label">Total HCs Previstos</span>
-      <span class="resumo-value ok" id="resumoTotalPicking">0</span>
-    </div>
-    <div class="resumo-row">
       <span class="resumo-label">RFs para Manutenção</span>
       <span class="resumo-value alt" id="resumoManut">Não</span>
+    </div>
+    <div class="resumo-row">
+      <span class="resumo-label">Total RFs Emprestados</span>
+      <span class="resumo-value info" id="resumoTotalEmprestado">0</span>
     </div>
     <div class="resumo-prev" id="resumoPrevBox" style="display:none;"></div>
     <div class="resumo-row" id="resumoPrevDiffRow" style="display:none;">
@@ -798,8 +931,8 @@
 
 <footer>
   <a href="https://www.linkedin.com/in/patrick-a-786689211?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
-     target="_blank" rel="noopener noreferrer"
-     style="color:inherit;text-decoration:underline;font-weight:700;cursor:pointer;">
+      target="_blank" rel="noopener noreferrer"
+      style="color:inherit;text-decoration:underline;font-weight:700;cursor:pointer;">
     Desenvolvido por Patrick Alves De Oliveira Maciel
   </a>
 </footer>
@@ -857,17 +990,37 @@ function calcDMO() {
       hcsPrevT4Transfer = +$("hcsPrevT4Transfer").value||0,
       hcsPrevT5Transfer = +$("hcsPrevT5Transfer").value||0;
   let rfManut = +$("rfManut").value||0;
+  
+  // Novas variáveis para RFs Emprestados por área
+  let rfPacking = +$("rfPacking").value||0;
+  let rfShipping = +$("rfShipping").value||0;
+  let rfRetiro = +$("rfRetiro").value||0;
+  let rfPutWall = +$("rfPutWall").value||0;
+  let rfPutAway = +$("rfPutAway").value||0;
+  let rfReturns = +$("rfReturns").value||0;
+  let rfInventario = +$("rfInventario").value||0;
+  let rfQualidade = +$("rfQualidade").value||0;
+  let rfIndiretosPicking = +$("rfIndiretosPicking").value||0;
+
+  let totalRfEmprestado = rfPacking + rfShipping + rfRetiro + rfPutWall + rfPutAway + rfReturns + rfInventario + rfQualidade + rfIndiretosPicking;
+
   let rfTotalSauron = rfT1 + rfT2 + rfT3 + rfT4 + rfT5 + rfSauron;
   let totalHcsPicking = hcsPrevT1Picking + hcsPrevT2Picking + hcsPrevT3Picking + hcsPrevT4Picking + hcsPrevT5Picking;
   let totalHcsTransfer = hcsPrevT1Transfer + hcsPrevT2Transfer + hcsPrevT3Transfer + hcsPrevT4Transfer + hcsPrevT5Transfer;
-  let totalRepsHoraPico = totalHcsPicking + totalHcsTransfer;
-  let totalRfsOperacao = rfTotalSauron + totalRepsHoraPico;
+  // let totalRepsHoraPico = totalHcsPicking + totalHcsTransfer; // Esta linha foi removida
+
+  // AQUI: Adiciona o totalRfEmprestado ao totalRfsOperacao
+  let totalRfsOperacao = rfTotalSauron + totalRfEmprestado; 
+  
+  // Atualiza os valores na tela
   $("rfTotalSauron").textContent = rfTotalSauron;
-  $("totalRepsHoraPico").textContent = totalRepsHoraPico;
-  $("totalRfsOperacao").textContent = totalRfsOperacao;
+  // $("totalRepsHoraPico").textContent = totalRepsHoraPico; // Esta linha foi removida
+  $("totalRfsOperacao").textContent = totalRfsOperacao; 
   $("resumoRFSauron").textContent = rfTotalSauron;
-  $("resumoTotalPicking").textContent = totalRepsHoraPico;
+  // $("resumoTotalPicking").textContent = totalRepsHoraPico; // Esta linha foi removida
   $("resumoManut").textContent = rfManut > 0 ? `${rfManut} RF${rfManut>1?'s':''}` : "Não";
+  $("resumoTotalEmprestado").textContent = totalRfEmprestado; // Atualiza o resumo para o total de RFs Emprestados
+
   const now = getNowBR();
   let prevMsg = "";
   let show = false;
@@ -946,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-  document.querySelectorAll('.entrada-input, .manut-input, .hc-field input').forEach(input => {
+  document.querySelectorAll('.entrada-input, .manut-input, .hc-field input, .area-input').forEach(input => { 
     input.addEventListener('input', calcDMO);
   });
   const resumoSide = $("resumoSide");
